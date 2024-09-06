@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= user.username %>'s Profile</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #f5f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .profile-container {
+      width: 90%;
+      max-width: 1000px;
+      margin: 20px;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .go-back-button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    .go-back-button:hover {
+      background-color: #0056b3;
+    }
+
+    .profile-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e1e5eb;
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 4px solid #007bff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-header h1 {
+      font-size: 2rem;
+      margin: 0;
+      color: #333;
+    }
+
+    .profile-header p {
+      font-size: 1rem;
+      color: #666;
+      margin: 5px 0;
+    }
+
+    .profile-content {
+      margin-top: 20px;
+    }
+
+    .profile-content h2 {
+      font-size: 1.5rem;
+      color: #007bff;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #007bff;
+      padding-bottom: 10px;
+    }
+
+    .post-list, .job-list, .story-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .post-list li, .job-list li, .story-list li {
+      margin-bottom: 20px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .post-list li:hover, .job-list li:hover, .story-list li:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .post-list li h3, .job-list li h3, .story-list li h3 {
+      font-size: 1.4rem;
+      margin-top: 0;
+      color: #333;
+    }
+
+    .post-list li p, .job-list li p, .story-list li p {
+      font-size: 0.9rem;
+      color: #555;
+      margin: 10px 0;
+      line-height: 1.5;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    /* Additional styles to control image size in posts */
+    .post-list li img {
+      max-height: 150px; /* Adjust as needed */
+      object-fit: cover;
+      width: 100%;
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    small {
+      display: block;
+      color: #999;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <!-- Go Back Button -->
+    <button class="go-back-button" onclick="history.back()">← Go Back</button>
+
+    <div class="profile-header">
+      <img src="<%= user.profilePicture.url %>" alt="<%= user.username %>'s Profile Picture" class="profile-pic">
+      <h1><%= user.username %></h1>
+      <p><%= user.fieldOfStudy %>, Class of <%= user.graduationYear %></p>
+      <p><%= user.industry %>, <%= user.location %></p>
+      <p><%= user.bio %></p>
+    </div>
+
+    <div class="profile-content">
+      <h2>Posts</h2>
+      <% if (user.posts.length > 0) { %>
+        <ul class="post-list">
+          <% user.posts.forEach(post => { %>
+            <li>
+              <h3><%= post.title %></h3>
+              <img src="<%= post.img.url %>" alt="<%= post.title %>">
+              <p><%= post.content %></p>
+              <small>Posted on <%= post.postedAt.toDateString() %></small>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <p>No posts yet.</p>
+      <% } %>
+
+      <h2>Jobs</h2>
+      <% if (user.jobs.length > 0) { %>
+        <ul class="job-list">
+          <% user.jobs.forEach(job => { %>
+            <li>
+              <h3><%= job.title %> at <%= job.company %></h3>
+              <p><%= job.description %></p>
+              <small>Location: <%= job.location %> | Experience: <%= job.experience %> years</small><br>
+              <small>Posted on <%= job.postedAt.toDateString() %></small>
+              <a href="<%= job.link %>" target="_blank">Apply here</a>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <p>No jobs posted yet.</p>
+      <% } %>
+
+      <h2>Success Stories</h2>
+      <% if (user.stories.length > 0) { %>
+        <ul class="story-list">
+          <% user.stories.forEach(story => { %>
+            <li>
+              <h3><%= story.title %></h3>
+              <p><%= story.content %></p>
+              <small>Published on <%= story.publishedAt.toDateString() %></small>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <p>No success stories yet.</p>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>

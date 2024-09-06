@@ -1,0 +1,68 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View the Story</title>
+    <style>
+        body {
+            padding-top: 70px; /* Adjust this value based on your navbar height */
+            background-color: #f8f9fa; /* Light background to contrast with the card */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            width: 500px;
+            max-width: 100%;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        h5.card-title {
+            margin-bottom: 15px;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        p.card-text {
+            margin-bottom: 10px;
+            font-size: 1rem;
+            color: #495057;
+        }
+
+        .btn {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"><%= story.title %></h5>
+            <p class="card-text"><%= story.content %></p>
+            <p class="card-text">Posted by: <b><%= story.userId.username %></b></p>
+            <p class="card-text"><b><%= story.publishedAt %></b></p>
+            <form action="/stories/<%= story._id %>/edit" method="get">
+                <button class="btn btn-warning">Edit</button>
+            </form>
+            <form action="/stories/<%= story._id %>/delete?_method=delete" method="post">
+                <button class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
